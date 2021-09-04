@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VendasWebMvc.Models;
 using VendasWebMvc.Services;
 
 namespace VendasWebMvc.Controllers
@@ -20,6 +21,19 @@ namespace VendasWebMvc.Controllers
             var list = _vendedorService.FindAll();
 
             return View(list);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Vendedor vendedor)
+        {
+            _vendedorService.Insert(vendedor);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
