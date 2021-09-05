@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VendasWebMvc.Models;
+using VendasWebMvc.Models.ViewModels;
 using VendasWebMvc.Services;
 
 namespace VendasWebMvc.Controllers
@@ -11,10 +12,12 @@ namespace VendasWebMvc.Controllers
     public class VendedoresController : Controller
     {
         private readonly VendedorService _vendedorService;
+        private readonly DepartmentService _departmentService;
 
-        public VendedoresController(VendedorService vendedorService)
+        public VendedoresController(VendedorService vendedorService, DepartmentService departmentService)
         {
             _vendedorService = vendedorService;
+            _departmentService = departmentService;
         }
         public IActionResult Index()
         {
@@ -25,7 +28,9 @@ namespace VendasWebMvc.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var departments = _departmentService.FindAll();
+            var viewModel = new VendedorFromViewModel { Departments = departments };
+            return View(viewModel);
         }
 
         [HttpPost]
